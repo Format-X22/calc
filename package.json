@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "tc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "loader.js",
+  "author": "",
+  "license": "commercial",
+  "dependencies": {
+    "mongodb": "^2.2.28",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
+}
