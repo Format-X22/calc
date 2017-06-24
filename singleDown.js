@@ -1,7 +1,7 @@
 const mongo = require('mongodb');
 
 const pairs = [
-    'BTC_AMP',
+    /*'BTC_AMP',
     'BTC_ARDR',
     //'BTC_BCN',
     'BTC_BCY',
@@ -48,9 +48,9 @@ const pairs = [
     'BTC_REP',
     'BTC_RIC',
     'BTC_SBD',
-    'BTC_SC',
+    'BTC_SC',*/
     'BTC_SJCX',
-    'BTC_STEEM',
+    /*'BTC_STEEM',
     'BTC_STR',
     'BTC_STRAT',
     'BTC_SYS',
@@ -75,7 +75,7 @@ const pairs = [
     'USDT_STR',
     'USDT_DASH',
     'USDT_XMR',
-    'USDT_REP'
+    'USDT_REP'*/
 ];
 
 const prefixesData = [
@@ -88,7 +88,9 @@ const prefixesData = [
 ];
 
 const profitFrom = 0.99;
-const profitTo = 0.85;
+const profitTo = 0.75;
+const backPriceFrom = 1.25;
+const backPriceTo = 1.01;
 const profitStep = 0.01;
 const dateFromRaw = +new Date('12/01/16')/1000;
 const skipDays = 30;
@@ -114,55 +116,47 @@ async function calc() {
                 profitCoef = +(profitCoef - profitStep).toFixed(2)
             ) {
 
-                let profit = 100;
-                let prev = null;
-                let prePrev = null;
-                let profitSum = 0;
+                for (
+                    let backPriceCoef = backPriceFrom;
+                    backPriceCoef >= backPriceTo;
+                    backPriceCoef = +(backPriceCoef - profitStep).toFixed(2)
+                ) {
+                    let profit = 100;
+                    let prev = null;
+                    let profitSum = 0;
 
-                for (let tick of ticks) {
-                    prev = prev || tick;
-                    prePrev = prePrev || prev;
+                    for (let tick of ticks) {
+                        prev = prev || tick;
 
-                    if (tick !== prev && prePrev !== prev) {
+                        if (tick !== prev) {
 
-                        let prePrevOpen = prePrev.open * profitCoef;
+                            const buyPrice = prev.open * profitCoef;
+                            const sellPrice = buyPrice * backPriceCoef;
 
-                        if (prev.low < prePrevOpen) {
-                            let profitRes = 1 + ((tick.open * 0.97 * 100 / prePrevOpen) - 100) / 100;
+                            if (prev.low < buyPrice) {
 
-                            profit *= profitRes;
+                                let profitRes = 0;
 
-                            profitSum += profitRes - 1;
-
-                        } else if (prePrev.low < prePrevOpen) {
-                            let highOrder = 1 + (1 - profitCoef) * 2;
-
-                            if (prev.high > prePrevOpen * highOrder) {
-                                let profitRes = highOrder * 0.9986;
-
-                                profit *= profitRes;
-
-                                profitSum += profitRes - 1;
-                            } else {
-                                let profitRes = 1 + ((tick.open * 0.97 * 100 / prePrevOpen) - 100) / 100;
+                                if (prev.high > sellPrice) {
+                                    profitRes = 1 + (1 - backPriceCoef) * 0.99;
+                                } else {
+                                    profitRes = 1 + ((tick.open * 0.97 * 100 / buyPrice) - 100) / 100;
+                                }
 
                                 profit *= profitRes;
-
                                 profitSum += profitRes - 1;
                             }
                         }
 
+                        prev = tick;
                     }
 
-                    prePrev = prev;
-                    prev = tick;
-                }
+                    //if (profit > 290) {
+                        //console.log(`Calc: ${pair} (${prefix || '5m_'}, ${profitCoef}, ${backPriceCoef}) = ${profit.toFixed(2)} (${profitSum})`);
+                    //}
 
-                if (profit > 290) {
-                    //console.log(`Calc: ${pair} (${prefix || '5m_'}, ${profitCoef}) = ${profit.toFixed(2)} (${profitSum})`);
+                    results.push({prefix: prefix || '5m_', pair, profitCoef, backPriceCoef, profit: profit.toFixed(2), profitSum});
                 }
-
-                results.push({prefix: prefix || '5m_', pair, profitCoef, profit: profit.toFixed(2), profitSum});
             }
 
             let maxVal = 0;
@@ -175,7 +169,7 @@ async function calc() {
                 }
             });
 
-            console.log(`Calc: ${pair} (${prefix || '5m_'}, ${max.profitCoef}) = ${max.profit} (${max.profitSum})`);
+            console.log(`Calc: ${pair} (${prefix || '5m_'}, ${max.profitCoef}, ${max.backPriceCoef}) = ${max.profit} (${max.profitSum})`);
 
             await db.collection('RESULTS').insertOne(max);
         }
