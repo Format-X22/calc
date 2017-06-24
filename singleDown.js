@@ -1,81 +1,81 @@
 const mongo = require('mongodb');
 
 const pairs = [
-    /*'BTC_AMP',
-    'BTC_ARDR',
+    ['BTC_AMP', 0.98],
+    ['BTC_ARDR', 0.98],
     //'BTC_BCN',
-    'BTC_BCY',
-    'BTC_BELA',
-    'BTC_BLK',
-    'BTC_BTCD',
-    'BTC_BTM',
-    'BTC_BTS',
-    'BTC_BURST',
-    'BTC_CLAM',
-    'BTC_DASH',
-    'BTC_DCR',
-    'BTC_DGB',
+    ['BTC_BCY', 0.96],
+    ['BTC_BELA', 0.97],
+    ['BTC_BLK', 0.97],
+    ['BTC_BTCD', 0.96],
+    ['BTC_BTM', 0.96],
+    ['BTC_BTS', 0.99],
+    ['BTC_BURST', 0.98],
+        ['BTC_CLAM', 0.99],
+        ['BTC_DASH', 0.99],
+        ['BTC_DCR', 0.99],
+        ['BTC_DGB', 0.99],
     //'BTC_DOGE',
-    'BTC_EMC2',
-    'BTC_ETC',
-    'BTC_ETH',
-    'BTC_EXP',
-    'BTC_FCT',
-    'BTC_FLDC',
-    'BTC_FLO',
-    'BTC_GAME',
-    'BTC_GNO',
-    'BTC_GNT',
-    'BTC_GRC',
-    'BTC_HUC',
-    'BTC_LBC',
-    'BTC_LSK',
-    'BTC_LTC',
-    'BTC_MAID',
-    'BTC_NAUT',
-    'BTC_NAV',
-    'BTC_NEOS',
-    'BTC_NMC',
-    'BTC_NOTE',
-    'BTC_NXC',
-    'BTC_NXT',
-    'BTC_OMNI',
-    'BTC_PASC',
-    'BTC_PINK',
-    'BTC_POT',
-    'BTC_PPC',
-    'BTC_RADS',
-    'BTC_REP',
-    'BTC_RIC',
-    'BTC_SBD',
-    'BTC_SC',*/
-    'BTC_SJCX',
-    /*'BTC_STEEM',
-    'BTC_STR',
-    'BTC_STRAT',
-    'BTC_SYS',
-    'BTC_VIA',
-    'BTC_VRC',
-    'BTC_VTC',
-    'BTC_XBC',
-    'BTC_XCP',
-    'BTC_XEM',
-    'BTC_XMR',
-    'BTC_XPM',
-    'BTC_XRP',
-    'BTC_XVC',
-    'BTC_ZEC',
-    'USDT_BTC',
-    'USDT_LTC',
-    'USDT_ETH',
-    'USDT_ETC',
-    'USDT_XRP',
-    'USDT_ZEC',
-    'USDT_NXT',
-    'USDT_STR',
-    'USDT_DASH',
-    'USDT_XMR',
-    'USDT_REP'*/
+        ['BTC_EMC2', 0.98],
+        ['BTC_ETC', 0.99],
+        ['BTC_ETH', 0.99],
+        ['BTC_EXP', 0.98],
+        ['BTC_FCT', 0.98],
+        ['BTC_FLDC', 0.97],
+        ['BTC_FLO', 0.98], // TODO
+        ['BTC_GAME', 0.98],
+        ['BTC_GNO', 0.98],
+        ['BTC_GNT', 0.98],
+        ['BTC_GRC', 0.98],
+        ['BTC_HUC', 0.98],
+        ['BTC_LBC', 0.98],
+        ['BTC_LSK', 0.98],
+        ['BTC_LTC', 0.98],
+        ['BTC_MAID', 0.98],
+        ['BTC_NAUT', 0.98],
+        ['BTC_NAV', 0.98],
+        ['BTC_NEOS', 0.98],
+        ['BTC_NMC', 0.98],
+        ['BTC_NOTE', 0.98],
+        ['BTC_NXC', 0.98],
+        ['BTC_NXT', 0.98],
+        ['BTC_OMNI', 0.98],
+        ['BTC_PASC', 0.98],
+        ['BTC_PINK', 0.98],
+        ['BTC_POT', 0.98],
+        ['BTC_PPC', 0.98],
+        ['BTC_RADS', 0.98],
+        ['BTC_REP', 0.98],
+        ['BTC_RIC', 0.98],
+        ['BTC_SBD', 0.98],
+        ['BTC_SC', 0.98],
+        ['BTC_SJCX', 0.98],
+        ['BTC_STEEM', 0.98],
+        ['BTC_STR', 0.98],
+        ['BTC_STRAT', 0.98],
+        ['BTC_SYS', 0.98],
+        ['BTC_VIA', 0.98],
+        ['BTC_VRC', 0.98],
+        ['BTC_VTC', 0.98],
+        ['BTC_XBC', 0.98],
+        ['BTC_XCP', 0.98],
+        ['BTC_XEM', 0.98],
+        ['BTC_XMR', 0.98],
+        ['BTC_XPM', 0.98],
+        ['BTC_XRP', 0.98],
+        ['BTC_XVC', 0.98],
+        ['BTC_ZEC', 0.98],
+        ['USDT_BTC', 0.98],
+        ['USDT_LTC', 0.98],
+        ['USDT_ETH', 0.98],
+        ['USDT_ETC', 0.98],
+        ['USDT_XRP', 0.98],
+        ['USDT_ZEC', 0.98],
+        ['USDT_NXT', 0.98],
+        ['USDT_STR', 0.98],
+        ['USDT_DASH', 0.98],
+    ['USDT_XMR', 0.98],
+    ['USDT_REP', 0.98]
 ];
 
 const prefixesData = [
@@ -88,17 +88,21 @@ const prefixesData = [
 ];
 
 const profitFrom = 0.99;
-const profitTo = 0.75;
-const backPriceFrom = 1.25;
+const profitTo = 0.85;
+const backPriceFrom = 1.15;
 const backPriceTo = 1.01;
 const profitStep = 0.01;
-const dateFromRaw = +new Date('12/01/16')/1000;
+const dateFromRaw = +new Date('03/01/17')/1000;
 const skipDays = 30;
 
 async function calc() {
     const db = await mongo.MongoClient.connect('mongodb://localhost:27017/calculator');
 
-    for (let pair of pairs) {
+    for (let pairData of pairs) {
+
+        const pair = pairData[0];
+        const spread = pairData[1];
+
         for (let prefixData of prefixesData) {
             let prefix = prefixData[0];
             let prefixMinutesMul = prefixData[1];
@@ -123,24 +127,28 @@ async function calc() {
                 ) {
                     let profit = 100;
                     let prev = null;
+                    let prePrev = null;
                     let profitSum = 0;
 
                     for (let tick of ticks) {
                         prev = prev || tick;
+                        prePrev = prePrev || prev;
 
-                        if (tick !== prev) {
+                        if (tick !== prev && prev !== prePrev) {
 
-                            const buyPrice = prev.open * profitCoef;
+                            const buyPrice = prePrev.open * profitCoef;
                             const sellPrice = buyPrice * backPriceCoef;
 
-                            if (prev.low < buyPrice) {
+                            if (prePrev.low < buyPrice) {
 
                                 let profitRes = 0;
 
-                                if (prev.high > sellPrice) {
-                                    profitRes = 1 + (1 - backPriceCoef) * 0.99;
+                                if (prePrev.close > sellPrice) {
+                                    profitRes = backPriceCoef;
+                                } else if (prev.high > sellPrice) {
+                                    profitRes = backPriceCoef;
                                 } else {
-                                    profitRes = 1 + ((tick.open * 0.97 * 100 / buyPrice) - 100) / 100;
+                                    profitRes = 1 + ((tick.open * spread * 100 / buyPrice) - 100) / 100;
                                 }
 
                                 profit *= profitRes;
@@ -148,6 +156,7 @@ async function calc() {
                             }
                         }
 
+                        prePrev = prev;
                         prev = tick;
                     }
 

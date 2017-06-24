@@ -24,7 +24,7 @@ const pairs = [
     'BTC_FLDC',
     'BTC_FLO',
     'BTC_GAME',
-    'BTC_GNO',
+    //'BTC_GNO',
     'BTC_GNT',
     'BTC_GRC',
     'BTC_HUC',
@@ -48,7 +48,7 @@ const pairs = [
     'BTC_REP',
     'BTC_RIC',
     'BTC_SBD',
-    'BTC_SC',
+    //'BTC_SC',
     'BTC_SJCX',
     'BTC_STEEM',
     'BTC_STR',
@@ -107,7 +107,7 @@ async function calc() {
         totalTradeProfit += +(data.profitSum);
     });
 
-    console.log((totalTradeProfit / 12).toFixed(2));
+    console.log((totalTradeProfit / 2).toFixed(2), pairs.length);
 }
 
 calc().then(() => {
