@@ -1,7 +1,7 @@
 const mongo = require('mongodb');
 
 const pairs = [
-    'BTC_AMP',
+    //'BTC_AMP',
     'BTC_ARDR',
     //'BTC_BCN',
     'BTC_BCY',
@@ -65,17 +65,17 @@ const pairs = [
     'BTC_XRP',
     'BTC_XVC',
     'BTC_ZEC',
-    'USDT_BTC',
+    /*'USDT_BTC',
     'USDT_LTC',
     'USDT_ETH',
-    'USDT_ETC',
-    'USDT_XRP',
+    //'USDT_ETC',
+    //'USDT_XRP',
     'USDT_ZEC',
     'USDT_NXT',
     'USDT_STR',
     'USDT_DASH',
-    'USDT_XMR',
-    'USDT_REP'
+    //'USDT_XMR',
+    'USDT_REP'*/
 ];
 
 async function calc() {
@@ -96,7 +96,7 @@ async function calc() {
             }
         });
 
-        console.log(`Calc: ${pair} (${max.prefix || '5m_'}, ${max.profitCoef}) = ${max.profit} (${max.profitSum})`);
+        console.log(`Calc: ${pair} (${max.prefix || '5m_'}, ${max.profitCoef}, ${max.backPriceCoef}) = ${max.profit} (${max.profitSum})`);
 
         maxAll.push(max);
     }
@@ -107,7 +107,7 @@ async function calc() {
         totalTradeProfit += +(data.profitSum);
     });
 
-    console.log((totalTradeProfit / 2).toFixed(2), pairs.length);
+    console.log((totalTradeProfit / 12).toFixed(2), pairs.length);
 }
 
 calc().then(() => {

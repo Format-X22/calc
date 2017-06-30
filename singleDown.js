@@ -1,7 +1,7 @@
 const mongo = require('mongodb');
 
 const pairs = [
-    ['BTC_AMP', 0.98],
+    //['BTC_AMP', 0.98],
     ['BTC_ARDR', 0.98],
     //'BTC_BCN',
     ['BTC_BCY', 0.96],
@@ -82,9 +82,9 @@ const prefixesData = [
     ['',     60 / 5 * 24],
     ['15m_', 60 / 15 * 24],
     ['30m_', 60 / 30 * 24],
-    ['2h_',  24 / 2],
-    ['4h_',  24 / 4],
-    ['1d_',  1]
+    //['2h_',  24 / 2],
+    //['4h_',  24 / 4],
+    //['1d_',  1]
 ];
 
 const profitFrom = 0.99;
@@ -92,7 +92,7 @@ const profitTo = 0.85;
 const backPriceFrom = 1.15;
 const backPriceTo = 1.01;
 const profitStep = 0.01;
-const dateFromRaw = +new Date('03/01/17')/1000;
+const dateFromRaw = +new Date('05/15/17')/1000;
 const skipDays = 30;
 
 async function calc() {
@@ -128,11 +128,19 @@ async function calc() {
                     let profit = 100;
                     let prev = null;
                     let prePrev = null;
+                    let prePrePrev = null;
+                    let prePrePrePrev = null;
+                    let prePrePrePrePrev = null;
+                    let prePrePrePrePrePrev = null;
                     let profitSum = 0;
 
                     for (let tick of ticks) {
                         prev = prev || tick;
                         prePrev = prePrev || prev;
+                        //prePrePrev = prePrePrev || prePrev;
+                        //prePrePrePrev = prePrePrePrev || prePrePrev;
+                        //prePrePrePrePrev = prePrePrePrePrev || prePrePrePrev;
+                        //prePrePrePrePrePrev = prePrePrePrePrePrev || prePrePrePrePrev;
 
                         if (tick !== prev && prev !== prePrev) {
 
@@ -145,6 +153,14 @@ async function calc() {
 
                                 if (prePrev.close > sellPrice) {
                                     profitRes = backPriceCoef;
+                                /*} else if (prePrePrePrePrev.high > sellPrice) {
+                                    profitRes = backPriceCoef;
+                                } else if (prePrePrePrev.high > sellPrice) {
+                                    profitRes = backPriceCoef;
+                                } else if (prePrePrev.high > sellPrice) {
+                                    profitRes = backPriceCoef;
+                                } else if (prePrev.high > sellPrice) {
+                                    profitRes = backPriceCoef;*/
                                 } else if (prev.high > sellPrice) {
                                     profitRes = backPriceCoef;
                                 } else {
@@ -156,6 +172,10 @@ async function calc() {
                             }
                         }
 
+                        //prePrePrePrePrePrev = prePrePrePrePrev;
+                        //prePrePrePrePrev = prePrePrePrev;
+                        //prePrePrePrev = prePrePrev;
+                        //prePrePrev = prePrev;
                         prePrev = prev;
                         prev = tick;
                     }

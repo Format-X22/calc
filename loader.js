@@ -2,18 +2,18 @@ const request = require('request-promise');
 const mongo = require('mongodb');
 const apiUrl = 'https://poloniex.com/public?';
 
-const from = +new Date('01.01.2016') / 1000;
-const to = +new Date('06.01.2017') / 1000;
+const from = +new Date('06.01.2017') / 1000;
+const to = +new Date('06.25.2017') / 1000;
 
-const period = 60 * 5;
-const prefix = '';
+const period = 60 * 30;
+const prefix = '30m_';
 
 async function calc() {
     const db = await mongo.MongoClient.connect('mongodb://localhost:27017/calculator');
 
     for (let pair of [
-        /*'BTC_AMP',
-        'BTC_ARDR',
+        //'BTC_AMP',
+        /*'BTC_ARDR',
         'BTC_BCN',
         'BTC_BCY',
         'BTC_BELA',
@@ -75,11 +75,11 @@ async function calc() {
         'BTC_XPM',
         'BTC_XRP',
         'BTC_XVC',
-        'BTC_ZEC',
+        'BTC_ZEC',*/
         'USDT_BTC',
         'USDT_LTC',
         'USDT_ETH',
-        'USDT_ETC',*/
+        'USDT_ETC',
         'USDT_XRP',
         'USDT_ZEC',
         'USDT_NXT',
